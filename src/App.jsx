@@ -292,12 +292,12 @@ const renderSlide = (slide) => {
           <div className="max-w-6xl mx-auto w-full">
             <h2 className="text-4xl md:text-6xl font-black mb-16 tracking-tighter text-center">{slide.title}</h2>
             <div className="flex gap-8 h-[340px]">
-              <div className="flex-1 bg-white/[0.02] rounded-[32px] p-8 md:p-10 border border-white/[0.05]">
-                <h3 className="text-xs font-bold mb-8 opacity-40 uppercase tracking-[0.3em]">{slide.old.title}</h3>
+              <div className="flex-1 bg-white/[0.04] rounded-[32px] p-8 md:p-10 border border-white/[0.12]">
+                <h3 className="text-xs font-bold mb-8 opacity-50 uppercase tracking-[0.3em]">{slide.old.title}</h3>
                 <ul className="space-y-4">
                   {slide.old.points.map((pt, i) => (
-                    <li key={i} className="flex items-center gap-3 text-white/40 truncate text-sm">
-                      <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                    <li key={i} className="flex items-center gap-3 text-white/50 truncate text-sm">
+                      <div className="w-1.5 h-1.5 rounded-full bg-white/30" />
                       {pt}
                     </li>
                   ))}
