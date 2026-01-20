@@ -3,7 +3,7 @@ const PDFDocument = require('pdfkit');
 const fs = require('fs');
 
 async function capturePresentationToPDF() {
-  console.log('Starting ultra-high-fidelity PDF capture (Zoomed)...');
+  console.log('Starting high-fidelity PDF capture (Fixed Framing)...');
 
   const browser = await puppeteer.launch({
     headless: true,
@@ -28,16 +28,14 @@ async function capturePresentationToPDF() {
 
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    // Slight crop to remove empty header/footer space and zoom in on content
-    // We capture 1920x1080 but the presentation is centered.
-    // We take a middle slice to "zoom in"
+    // Adjusted clipping to keep headers safe while still "zooming in" slightly
     const screenshot = await page.screenshot({
       type: 'png',
       clip: {
-        x: 100,      // Trim sides
-        y: 80,       // Trim top (header)
-        width: 1720, // Focus on core
-        height: 920  // Trim bottom (footer)
+        x: 50,      // Minimal side trim
+        y: 20,      // Very minimal top trim to ensure headers are NOT cut off
+        width: 1820,
+        height: 1020
       }
     });
 
@@ -51,7 +49,7 @@ async function capturePresentationToPDF() {
 
   await browser.close();
 
-  console.log('Assembling Zoomed PDF in A4 Landscape...');
+  console.log('Assembling PDF in A4 Landscape...');
   const doc = new PDFDocument({
     size: 'A4',
     layout: 'landscape',
@@ -69,7 +67,6 @@ async function capturePresentationToPDF() {
 
     doc.rect(0, 0, doc.page.width, doc.page.height).fill('#000000');
 
-    // Fit the cropped high-res screenshot to the A4 page
     doc.image(screenshot, 0, 0, {
       fit: [doc.page.width, doc.page.height],
       align: 'center',
@@ -80,7 +77,7 @@ async function capturePresentationToPDF() {
   doc.end();
 
   stream.on('finish', () => {
-    console.log('✅ Zoomed PDF successfully assembled: ' + outputPath);
+    console.log('✅ PDF successfully assembled: ' + outputPath);
   });
 }
 
