@@ -390,11 +390,11 @@ const renderSlide = (slide) => {
           <div className="max-w-4xl">
             <h2 className="text-5xl md:text-6xl font-black mb-4 tracking-tighter leading-tight">{slide.title}</h2>
             <p className="text-xl md:text-2xl text-accent font-bold mb-10 uppercase tracking-widest">{slide.subtitle}</p>
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid grid-cols-2 gap-10">
               {slide.points.map((pt, i) => (
-                <div key={i} className="flex items-center gap-4 bg-white/[0.03] p-6 rounded-2xl border border-white/[0.05]">
-                  <CheckCircle2 className="text-accent" size={24} />
-                  <span className="text-lg font-medium">{pt}</span>
+                <div key={i} className="flex items-center gap-5 bg-white/[0.06] p-8 rounded-2xl border border-white/[0.12] hover:border-accent/30 hover:bg-white/[0.08] transition-all cursor-pointer group">
+                  <CheckCircle2 className="text-accent flex-shrink-0" size={28} />
+                  <span className="text-xl font-medium">{pt}</span>
                 </div>
               ))}
             </div>
