@@ -324,20 +324,20 @@ const renderSlide = (slide) => {
 
     case 'roadmap':
       return (
-        <div className="flex-1 p-12 md:p-16 flex flex-col pt-24">
+        <div className="flex-1 p-12 md:p-16 flex flex-col pt-12">
           <div className="max-w-6xl mx-auto w-full">
-            <h2 className="text-5xl md:text-7xl font-black mb-12 tracking-tighter text-center sm:text-left">Growth Roadmap</h2>
-            <div className="grid grid-cols-3 gap-6">
+            <h2 className="text-5xl md:text-7xl font-black mb-8 tracking-tighter text-center sm:text-left">Growth Roadmap</h2>
+            <div className="grid grid-cols-3 gap-8">
               {slide.phases.map((ph, i) => (
                 <motion.div
                   key={i}
                   whileHover={{ y: -8 }}
-                  className="bg-white/[0.03] border border-white/[0.05] rounded-[32px] p-6 md:p-8 flex flex-col h-full hover:border-accent/30 transition-colors"
+                  className="bg-white/[0.05] border border-white/[0.12] rounded-[32px] p-10 md:p-12 flex flex-col h-full hover:border-accent/30 transition-colors"
                 >
-                  <div className="text-accent font-black text-3xl md:text-4xl mb-4 opacity-40">{ph.phase}</div>
-                  <h3 className="text-lg md:text-2xl font-bold mb-1">{ph.name}</h3>
-                  <div className="text-white/30 font-mono text-[9px] tracking-[0.2em] uppercase mb-4">{ph.timeline}</div>
-                  <p className="text-xs md:text-sm text-white/50 leading-relaxed mb-6 flex-1">{ph.desc}</p>
+                  <div className="text-accent font-black text-5xl md:text-6xl mb-5 opacity-40">{ph.phase}</div>
+                  <h3 className="text-2xl md:text-3xl font-bold mb-2">{ph.name}</h3>
+                  <div className="text-white/30 font-mono text-xs tracking-[0.2em] uppercase mb-5">{ph.timeline}</div>
+                  <p className="text-sm md:text-base text-white/50 leading-relaxed mb-6 flex-1">{ph.desc}</p>
                   <div className="h-1 w-8 bg-accent/30 rounded-full" />
                 </motion.div>
               ))}
