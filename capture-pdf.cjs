@@ -3,7 +3,7 @@ const PDFDocument = require('pdfkit');
 const fs = require('fs');
 
 async function capturePresentationToPDF() {
-  console.log('Starting high-fidelity PDF capture (Fixed Framing)...');
+  console.log('Starting full-frame PDF capture...');
 
   const browser = await puppeteer.launch({
     headless: true,
@@ -26,30 +26,26 @@ async function capturePresentationToPDF() {
   for (let i = 0; i < 14; i++) {
     console.log(`Capturing slide ${i + 1}/14...`);
 
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Wait for animations and fonts to settle
+    await new Promise(resolve => setTimeout(resolve, 2500));
 
-    // Adjusted clipping to keep headers safe while still "zooming in" slightly
+    // CAPTURING FULL FRAME - NO CLIPPING (Restores borders)
     const screenshot = await page.screenshot({
       type: 'png',
-      clip: {
-        x: 50,      // Minimal side trim
-        y: 20,      // Very minimal top trim to ensure headers are NOT cut off
-        width: 1820,
-        height: 1020
-      }
+      fullPage: false
     });
 
     screenshots.push(screenshot);
 
     if (i < 13) {
       await page.keyboard.press('ArrowRight');
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1200));
     }
   }
 
   await browser.close();
 
-  console.log('Assembling PDF in A4 Landscape...');
+  console.log('Assembling High-Fidelity PDF in A4 Landscape...');
   const doc = new PDFDocument({
     size: 'A4',
     layout: 'landscape',
@@ -58,27 +54,38 @@ async function capturePresentationToPDF() {
 
   const outputPath = 'public/ZestOS-Presentation.pdf';
   const stream = fs.createWriteStream(outputPath);
-  doc.pipe(stream);
 
-  screenshots.forEach((screenshot, index) => {
-    if (index > 0) {
-      doc.addPage({ size: 'A4', layout: 'landscape', margin: 0 });
-    }
-
-    doc.rect(0, 0, doc.page.width, doc.page.height).fill('#000000');
-
-    doc.image(screenshot, 0, 0, {
-      fit: [doc.page.width, doc.page.height],
-      align: 'center',
-      valign: 'center'
+  return new Promise((resolve, reject) => {
+    stream.on('error', reject);
+    stream.on('finish', () => {
+      console.log('✅ PDF successfully assembled: ' + outputPath);
+      resolve();
     });
-  });
 
-  doc.end();
+    doc.pipe(stream);
 
-  stream.on('finish', () => {
-    console.log('✅ PDF successfully assembled: ' + outputPath);
+    screenshots.forEach((screenshot, index) => {
+      if (index > 0) {
+        doc.addPage({ size: 'A4', layout: 'landscape', margin: 0 });
+      }
+
+      doc.rect(0, 0, doc.page.width, doc.page.height).fill('#000000');
+
+      doc.image(screenshot, 0, 0, {
+        fit: [doc.page.width, doc.page.height],
+        align: 'center',
+        valign: 'center'
+      });
+    });
+
+    doc.end();
   });
 }
 
-capturePresentationToPDF().catch(console.error);
+capturePresentationToPDF().then(() => {
+  console.log('Capture process finished successfully.');
+  process.exit(0);
+}).catch(err => {
+  console.error('Capture failed:', err);
+  process.exit(1);
+});
