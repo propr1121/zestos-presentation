@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 import {
   ChevronRight,
   ChevronLeft,
@@ -13,7 +15,11 @@ import {
   Users,
   Layout,
   Database,
-  ArrowRight
+  ArrowRight,
+  Palette,
+  UserCheck,
+  Calendar,
+  Download
 } from 'lucide-react';
 
 const Logo = ({ allCaps = false }) => (
@@ -55,6 +61,7 @@ const App = () => {
     {
       type: 'comparison',
       title: 'The Shift in Intelligence',
+      subtitle: 'From static data storage to living, intelligent automation.',
       old: {
         title: 'The Old Way',
         points: ['Static CRM Folders', 'Manual Lead Entry', 'Disconnected Messaging', 'Fragmented Customer Profiles']
@@ -67,16 +74,18 @@ const App = () => {
     {
       type: 'roadmap',
       title: 'Growth Roadmap',
+      subtitle: 'Three phases to transform your agency with intelligent automation.',
       phases: [
-        { phase: '01', name: 'Foundation', timeline: 'Phase 1: Foundation', desc: 'WhatsApp native AI assistant & web widget. 24/7 customer self-service.' },
+        { phase: '01', name: 'AI Intelligence', timeline: 'Phase 1: Foundation', desc: 'WhatsApp native AI assistant & web widget. 24/7 customer self-service.' },
         { phase: '02', name: 'Smart CRM Lite', timeline: 'Phase 2: Growth', desc: 'Add agents, manage listings, and gain AI-driven insights into leads.' },
         { phase: '03', name: 'Living Ecosystem', timeline: 'Phase 3: Scale', desc: 'Full Operating System. Portal pushes and API stack.' }
       ]
     },
     {
       type: 'feature',
-      title: 'Step 1: The Intelligence Layer',
+      title: 'Phase 1: The Intelligence Layer',
       subtitle: 'ZestOS Foundation',
+      description: 'AI-powered assistant deployed across WhatsApp and web empowering your team & customers.',
       points: [
         'WhatsApp Assistant for Agents',
         'Customer WhatsApp Agent',
@@ -87,6 +96,7 @@ const App = () => {
     {
       type: 'split',
       title: 'Two Channels, One Brain',
+      subtitle: 'Your personal AI assistant works 24/7 for both your team and your customers.',
       left: {
         title: 'The Agent Side',
         desc: 'Internal WhatsApp bot to query listings, schedule viewings, and manage client data on the go.'
@@ -99,6 +109,7 @@ const App = () => {
     {
       type: 'grid',
       title: 'ZestOS Core Architecture',
+      subtitle: 'The foundation powering intelligent automation across your agency.',
       items: [
         { icon: <Database />, title: 'Listing Sync', desc: 'Deep integration with your CRM or manual listing manager.' },
         { icon: <MessageSquare />, title: 'LLM Engine', desc: 'Custom trained on your agency context and property specifics.' },
@@ -116,11 +127,17 @@ const App = () => {
       type: 'feature_highlight',
       title: 'Intelligent Web Agent',
       desc: 'Not just a chatbot. A sales-ready assistant that understands property value and location context.',
-      points: ['Custom UI Styling', 'Deep CRM Integration', 'Lead Qualification', 'Instant Scheduling']
+      points: [
+        { icon: <Palette />, text: 'Custom UI Styling' },
+        { icon: <Database />, text: 'Deep CRM Integration' },
+        { icon: <UserCheck />, text: 'Lead Qualification' },
+        { icon: <Calendar />, text: 'Instant Scheduling' }
+      ]
     },
     {
       type: 'grid',
       title: 'The Agency Command Center',
+      subtitle: 'Your control hub for managing AI behavior, branding, and lead intelligence.',
       items: [
         { icon: <Layout />, title: 'Brand Setup', desc: 'Configure your company identity and tone of voice.' },
         { icon: <Zap />, title: 'Embed Codes', desc: 'One-click widget deployment for your website.' },
@@ -131,15 +148,17 @@ const App = () => {
     {
       type: 'pricing',
       title: 'Built for Scale',
+      subtitle: 'Start with Foundation today. Growth and Scale phases coming soon with expanded capabilities.',
       tiers: [
-        { name: 'Lite', price: '€449/mo', features: ['AI WhatsApp Agent', 'Web Widget', 'Listing Sync'] },
+        { name: 'Foundation', price: '€999/mo', features: ['AI WhatsApp Agent', 'Web Widget', 'Listing Sync'] },
         { name: 'Growth', price: 'TBC', features: ['Phase 2 CRM Features', 'Multi-Agent Support', 'Advanced Analytics'] },
-        { name: 'Enterprise', price: 'TBC', features: ['Full Real Estate OS', 'Portal Integrations', 'Custom API access'] }
+        { name: 'Scale', price: 'TBC', features: ['Full Real Estate OS', 'Portal Integrations', 'Custom API access'] }
       ]
     },
     {
       type: 'partner',
       title: 'Founding Partner Opportunity',
+      subtitle: 'Join us in shaping the future of real estate intelligence.',
       benefits: [
         'Influence the product roadmap',
         'Special founding member pricing',
@@ -156,7 +175,7 @@ const App = () => {
     {
       type: 'cta',
       title: 'Transform Your Agency',
-      subtitle: 'Starting here, in Lagos, Algarve.',
+      subtitle: 'Embrace Your Data.',
       text: 'Schedule a demo to see ZestOS in action.'
     }
   ];
@@ -172,6 +191,11 @@ const App = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  const exportToPDF = () => {
+    // Use browser's built-in print dialog which can save as PDF
+    window.print();
+  };
 
   const slide = slides[currentSlide];
 
@@ -196,9 +220,9 @@ const App = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-            className="flex-1 flex max-h-[calc(100vh-128px)]"
+            className="flex-1 flex max-h-[calc(100vh-128px)] slide-container"
           >
-            {renderSlide(slide)}
+            {renderSlide(slide, exportToPDF)}
           </motion.div>
         </AnimatePresence>
       </main>
@@ -228,7 +252,7 @@ const App = () => {
   );
 };
 
-const renderSlide = (slide) => {
+const renderSlide = (slide, exportToPDF) => {
   switch (slide.type) {
     case 'cover':
       return (
@@ -261,8 +285,8 @@ const renderSlide = (slide) => {
     case 'problem':
       return (
         <div className="flex-1 flex max-h-full">
-          <div className="w-1/2 p-12 md:p-16 flex flex-col justify-center">
-            <h2 className="text-4xl md:text-6xl font-black mb-10 tracking-tighter leading-tight">{slide.title}</h2>
+          <div className="w-3/5 p-12 md:p-16 flex flex-col justify-center">
+            <h2 className="text-5xl md:text-7xl font-black mb-12 tracking-tighter leading-tight">{slide.title}</h2>
             <div className="space-y-6">
               {slide.points.map((pt, i) => (
                 <motion.div
@@ -272,14 +296,14 @@ const renderSlide = (slide) => {
                   transition={{ delay: 0.4 + (i * 0.1) }}
                   className="group"
                 >
-                  <h3 className="text-lg md:text-xl font-bold text-accent mb-1">{pt.title}</h3>
-                  <p className="text-sm md:text-base text-white/50 group-hover:text-white/90 transition-colors leading-relaxed">{pt.desc}</p>
+                  <h3 className="text-xl md:text-2xl font-bold text-accent mb-2">{pt.title}</h3>
+                  <p className="text-base md:text-lg text-white/50 group-hover:text-white/90 transition-colors leading-relaxed">{pt.desc}</p>
                   <div className="mt-4 h-px w-full bg-white/15 group-last:hidden" />
                 </motion.div>
               ))}
             </div>
           </div>
-          <div className="w-1/2 relative h-full">
+          <div className="w-2/5 relative h-full">
             <img src={slide.bgImage} className="w-full h-full object-cover grayscale brightness-[0.65] contrast-110" alt="Problem" />
             <div className="absolute inset-0 bg-gradient-to-l from-black/0 via-black/20 to-black" />
           </div>
@@ -288,15 +312,18 @@ const renderSlide = (slide) => {
 
     case 'comparison':
       return (
-        <div className="flex-1 p-12 md:p-16 flex flex-col pt-24">
-          <div className="max-w-6xl mx-auto w-full">
-            <h2 className="text-4xl md:text-6xl font-black mb-16 tracking-tighter text-center">{slide.title}</h2>
+        <div className="flex-1 p-12 md:p-16 flex flex-col justify-center">
+          <div className="max-w-6xl mx-auto w-full pt-24">
+            <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter text-center">{slide.title}</h2>
+            {slide.subtitle && (
+              <p className="text-lg md:text-xl text-white/50 text-center mb-12 max-w-4xl mx-auto leading-relaxed">{slide.subtitle}</p>
+            )}
             <div className="flex gap-8 h-[340px]">
               <div className="flex-1 bg-white/[0.04] rounded-[32px] p-8 md:p-10 border border-white/[0.12]">
                 <h3 className="text-xs font-bold mb-8 opacity-50 uppercase tracking-[0.3em]">{slide.old.title}</h3>
                 <ul className="space-y-4">
                   {slide.old.points.map((pt, i) => (
-                    <li key={i} className="flex items-center gap-3 text-white/50 truncate text-sm">
+                    <li key={i} className="flex items-center gap-3 text-white/50 truncate text-base">
                       <div className="w-1.5 h-1.5 rounded-full bg-white/30" />
                       {pt}
                     </li>
@@ -324,9 +351,12 @@ const renderSlide = (slide) => {
 
     case 'roadmap':
       return (
-        <div className="flex-1 p-12 md:p-16 flex flex-col pt-12">
-          <div className="max-w-6xl mx-auto w-full">
-            <h2 className="text-5xl md:text-7xl font-black mb-8 tracking-tighter text-center sm:text-left">Growth Roadmap</h2>
+        <div className="flex-1 p-12 md:p-16 flex flex-col justify-center">
+          <div className="max-w-6xl mx-auto w-full pt-24">
+            <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter text-center sm:text-left">Growth Roadmap</h2>
+            {slide.subtitle && (
+              <p className="text-lg md:text-xl text-white/50 mb-8 leading-relaxed max-w-4xl text-center sm:text-left">{slide.subtitle}</p>
+            )}
             <div className="grid grid-cols-3 gap-8">
               {slide.phases.map((ph, i) => (
                 <motion.div
@@ -348,18 +378,21 @@ const renderSlide = (slide) => {
 
     case 'grid':
       return (
-        <div className="flex-1 p-12 md:p-16 flex flex-col pt-24">
-          <div className="max-w-6xl mx-auto w-full">
-            <h2 className="text-5xl md:text-7xl font-black mb-16 tracking-tighter">{slide.title}</h2>
-            <div className="grid grid-cols-2 gap-10">
+        <div className="flex-1 p-12 md:p-16 flex flex-col justify-center">
+          <div className="max-w-6xl mx-auto w-full pt-24">
+            <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter">{slide.title}</h2>
+            {slide.subtitle && (
+              <p className="text-lg md:text-xl text-white/50 mb-16 leading-relaxed max-w-4xl">{slide.subtitle}</p>
+            )}
+            <div className="grid grid-cols-2 gap-12">
               {slide.items.map((item, i) => (
-                <div key={i} className="flex gap-6 group">
-                  <div className="w-14 h-14 rounded-2xl bg-white/[0.07] border border-white/[0.1] group-hover:border-accent/40 group-hover:bg-accent/10 flex items-center justify-center text-white/50 group-hover:text-accent flex-shrink-0 transition-all">
-                    {React.cloneElement(item.icon, { size: 28 })}
+                <div key={i} className="flex gap-8 group cursor-pointer">
+                  <div className="w-16 h-16 rounded-2xl bg-white/[0.1] border border-white/[0.15] group-hover:border-accent/40 group-hover:bg-accent/10 flex items-center justify-center text-white/60 group-hover:text-accent flex-shrink-0 transition-all duration-300">
+                    {React.cloneElement(item.icon, { size: 32 })}
                   </div>
                   <div>
-                    <h3 className="text-xl md:text-2xl font-bold mb-2 group-hover:text-accent transition-colors">{item.title}</h3>
-                    <p className="text-sm md:text-base text-white/40 leading-relaxed">{item.desc}</p>
+                    <h3 className="text-2xl md:text-3xl font-bold mb-3 group-hover:text-accent transition-colors duration-300">{item.title}</h3>
+                    <p className="text-base md:text-lg text-white/50 group-hover:text-white/70 leading-relaxed transition-colors duration-300">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -371,7 +404,7 @@ const renderSlide = (slide) => {
     case 'mockup':
       return (
         <div className="flex-1 flex max-h-full">
-          <div className="w-1/2 p-12 md:p-16 flex flex-col pt-24">
+          <div className="w-1/2 p-12 md:p-16 flex flex-col justify-center">
             <div className="max-w-xl">
               <h2 className="text-6xl md:text-8xl font-black mb-10 tracking-tighter leading-[0.8]">{slide.title}</h2>
               <p className="text-xl md:text-3xl font-medium text-white/50 leading-relaxed whitespace-pre-line">{slide.desc}</p>
@@ -387,8 +420,11 @@ const renderSlide = (slide) => {
     case 'feature':
       return (
         <div className="flex-1 p-12 md:p-16 flex flex-col justify-center">
-          <div className="max-w-4xl">
-            <h2 className="text-5xl md:text-6xl font-black mb-4 tracking-tighter leading-tight">{slide.title}</h2>
+          <div className="max-w-6xl mx-auto w-full pt-24">
+            <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter leading-tight">{slide.title}</h2>
+            {slide.description && (
+              <p className="text-lg md:text-xl text-white/50 mb-8 leading-relaxed max-w-4xl">{slide.description}</p>
+            )}
             <p className="text-xl md:text-2xl text-accent font-bold mb-10 uppercase tracking-widest">{slide.subtitle}</p>
             <div className="grid grid-cols-2 gap-10">
               {slide.points.map((pt, i) => (
@@ -407,20 +443,23 @@ const renderSlide = (slide) => {
         <div className="flex-1 flex flex-col">
           <div className="px-12 md:px-16 pt-24 pb-8">
             <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-center">{slide.title}</h2>
+            {slide.subtitle && (
+              <p className="text-lg md:text-xl text-white/50 text-center mt-6 max-w-4xl mx-auto leading-relaxed">{slide.subtitle}</p>
+            )}
           </div>
           <div className="flex-1 flex">
-            <div className="w-1/2 p-12 md:p-16 flex flex-col justify-center border-r border-white/5 bg-accent/[0.02]">
+            <div className="w-1/2 p-12 md:p-16 flex flex-col justify-center border-r border-white/5 bg-accent/[0.02] hover:bg-accent/[0.04] transition-all duration-300 group cursor-pointer">
               <div className="max-w-sm ml-auto">
-                <Smartphone className="text-accent mb-6" size={48} />
-                <h3 className="text-3xl md:text-4xl font-black mb-4 tracking-tighter">{slide.left.title}</h3>
-                <p className="text-lg text-white/40 leading-relaxed">{slide.left.desc}</p>
+                <Smartphone className="text-accent mb-6 group-hover:scale-110 transition-transform duration-300" size={48} />
+                <h3 className="text-3xl md:text-4xl font-black mb-4 tracking-tighter group-hover:text-accent transition-colors">{slide.left.title}</h3>
+                <p className="text-xl text-white/40 group-hover:text-white/60 leading-relaxed transition-colors">{slide.left.desc}</p>
               </div>
             </div>
-            <div className="w-1/2 p-12 md:p-16 flex flex-col justify-center bg-white/[0.01]">
+            <div className="w-1/2 p-12 md:p-16 flex flex-col justify-center bg-white/[0.01] hover:bg-white/[0.03] transition-all duration-300 group cursor-pointer">
               <div className="max-w-sm mr-auto">
-                <Users className="text-accent mb-6" size={48} />
-                <h3 className="text-3xl md:text-4xl font-black mb-4 tracking-tighter">{slide.right.title}</h3>
-                <p className="text-lg text-white/40 leading-relaxed">{slide.right.desc}</p>
+                <Users className="text-accent mb-6 group-hover:scale-110 transition-transform duration-300" size={48} />
+                <h3 className="text-3xl md:text-4xl font-black mb-4 tracking-tighter group-hover:text-accent transition-colors">{slide.right.title}</h3>
+                <p className="text-xl text-white/40 group-hover:text-white/60 leading-relaxed transition-colors">{slide.right.desc}</p>
               </div>
             </div>
           </div>
@@ -430,14 +469,16 @@ const renderSlide = (slide) => {
     case 'feature_highlight':
       return (
         <div className="flex-1 p-12 md:p-16 flex flex-col justify-center">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-5xl md:text-6xl font-black mb-6 tracking-tighter">{slide.title}</h2>
-            <p className="text-xl md:text-2xl text-white/40 mb-12 leading-relaxed">{slide.desc}</p>
-            <div className="grid grid-cols-2 gap-x-12 gap-y-6">
+          <div className="max-w-6xl mx-auto w-full pt-24">
+            <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter">{slide.title}</h2>
+            <p className="text-lg md:text-xl text-white/50 mb-12 leading-relaxed max-w-4xl">{slide.desc}</p>
+            <div className="grid grid-cols-2 gap-8">
               {slide.points.map((pt, i) => (
-                <div key={i} className="flex items-center gap-4">
-                  <div className="w-2 h-2 rounded-full bg-accent shadow-[0_0_8px_rgba(165,241,78,1)]" />
-                  <span className="text-lg font-bold tracking-tight">{pt}</span>
+                <div key={i} className="flex items-center gap-5 bg-white/[0.04] p-6 rounded-2xl border border-white/[0.08] hover:border-accent/30 hover:bg-white/[0.06] transition-all cursor-pointer group">
+                  <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/20 group-hover:border-accent/40 group-hover:shadow-[0_0_20px_rgba(165,241,78,0.4)] transition-all duration-300">
+                    {React.cloneElement(pt.icon, { size: 20, className: "text-accent" })}
+                  </div>
+                  <span className="text-xl md:text-2xl font-bold tracking-tight group-hover:text-accent transition-colors duration-300">{pt.text}</span>
                 </div>
               ))}
             </div>
@@ -448,25 +489,31 @@ const renderSlide = (slide) => {
     case 'pricing':
       return (
         <div className="flex-1 p-12 md:p-16 flex flex-col justify-center">
-          <h2 className="text-4xl md:text-6xl font-black mb-12 tracking-tighter text-center">{slide.title}</h2>
-          <div className="flex gap-6 max-w-6xl mx-auto w-full">
-            {slide.tiers.map((tier, i) => (
-              <div key={i} className={`flex-1 rounded-3xl p-8 flex flex-col ${i === 0 ? 'bg-accent/10 border-accent/20 border-2' : 'bg-white/[0.03] border border-white/[0.05]'}`}>
-                <h3 className="text-xs font-bold mb-2 uppercase tracking-[0.2em] opacity-40">{tier.name}</h3>
-                <div className="text-4xl font-black mb-8">{tier.price}</div>
-                <div className="space-y-3 mb-10 flex-1">
-                  {tier.features.map((f, j) => (
-                    <div key={j} className="flex items-center gap-2">
-                      <CheckCircle2 size={14} className="text-accent" />
-                      <span className="text-xs font-medium text-white/60">{f}</span>
-                    </div>
-                  ))}
+          <div className="max-w-6xl mx-auto w-full pt-24">
+            <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter text-center">{slide.title}</h2>
+            {slide.subtitle && (
+              <p className="text-lg md:text-xl text-white/50 mb-12 leading-relaxed text-center max-w-4xl mx-auto">{slide.subtitle}</p>
+            )}
+            <div className="flex gap-6 w-full">
+              {slide.tiers.map((tier, i) => (
+                <div key={i} className={`flex-1 rounded-3xl p-8 flex flex-col ${i === 0 ? 'bg-accent/10 border-accent/20 border-2' : 'bg-white/[0.03] border border-white/[0.05]'}`}>
+                  <h3 className="text-xs font-bold mb-2 uppercase tracking-[0.2em] opacity-40">{tier.name}</h3>
+                  <div className="text-4xl font-black mb-2">{tier.price}</div>
+                  <div className="text-sm font-bold text-accent mb-8">{i === 0 ? 'AI Intelligence' : i === 1 ? 'CRM Lite' : 'Living Ecosystem'}</div>
+                  <div className="space-y-3 mb-6">
+                    {tier.features.map((f, j) => (
+                      <div key={j} className="flex items-center gap-2">
+                        <CheckCircle2 size={14} className="text-accent" />
+                        <span className="text-sm font-medium text-white/60">{f}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <button className={`w-full py-3 rounded-xl font-bold text-sm transition-all ${i === 0 ? 'bg-accent text-black hover:scale-105' : 'bg-white/5 hover:bg-white/10'}`}>
+                    {i === 0 ? 'Today' : i === 1 ? 'Next' : 'Future'}
+                  </button>
                 </div>
-                <button className={`w-full py-3 rounded-xl font-bold text-sm transition-all ${i === 0 ? 'bg-accent text-black hover:scale-105' : 'bg-white/5 hover:bg-white/10'}`}>
-                  Get Started
-                </button>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       );
@@ -474,21 +521,27 @@ const renderSlide = (slide) => {
     case 'partner':
       return (
         <div className="flex-1 p-12 md:p-16 flex flex-col justify-center">
-          <div className="max-w-4xl bg-gradient-to-br from-white/[0.05] to-transparent p-12 rounded-[48px] border border-white/[0.1] mx-auto">
-            <h2 className="text-4xl md:text-6xl font-black mb-8 tracking-tighter">{slide.title}</h2>
-            <div className="grid grid-cols-2 gap-x-12 mb-10">
-              <div className="space-y-4">
-                {slide.benefits.map((b, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <TrendingUp size={20} className="text-accent" />
-                    <span className="text-lg font-medium tracking-tight whitespace-nowrap">{b}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="flex flex-col justify-center items-end">
-                <div className="text-sm font-bold uppercase tracking-widest opacity-30 mb-2">Initial Commitment</div>
-                <div className="text-4xl md:text-5xl font-black text-accent">{slide.price.split(' Setup')[0]}</div>
-                <div className="text-sm font-bold opacity-30 mt-2">+ {slide.price.split('+ ')[1]}</div>
+          <div className="max-w-6xl mx-auto w-full pt-24">
+            <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter text-center">{slide.title}</h2>
+            {slide.subtitle && (
+              <p className="text-lg md:text-xl text-white/50 mb-12 leading-relaxed text-center max-w-4xl mx-auto">{slide.subtitle}</p>
+            )}
+            <div className="max-w-4xl bg-gradient-to-br from-white/[0.05] to-transparent p-12 rounded-[48px] border border-white/[0.1] mx-auto">
+              <div className="grid grid-cols-2 gap-x-12">
+                <div className="space-y-4">
+                  {slide.benefits.map((b, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <TrendingUp size={20} className="text-accent" />
+                      <span className="text-lg font-medium tracking-tight whitespace-nowrap">{b}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex flex-col justify-center items-end">
+                  <div className="text-xs font-bold uppercase tracking-widest opacity-30 mb-3">Initial Commitment</div>
+                  <div className="text-4xl md:text-5xl font-black text-accent mb-1">€6,500</div>
+                  <div className="text-sm font-bold text-accent/60 mb-4">One-time Setup</div>
+                  <div className="text-sm font-bold opacity-30">+ €299/mo</div>
+                </div>
               </div>
             </div>
           </div>
@@ -497,8 +550,8 @@ const renderSlide = (slide) => {
 
     case 'quote':
       return (
-        <div className="flex-1 p-12 md:p-16 flex flex-col justify-center items-center text-center">
-          <div className="max-w-4xl">
+        <div className="flex-1 p-12 md:p-16 flex flex-col items-center text-center">
+          <div className="max-w-6xl mx-auto w-full pt-24">
             <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
               <p className="text-4xl md:text-6xl font-black mb-12 italic tracking-tighter leading-tight">
                 {slide.text}
@@ -512,18 +565,23 @@ const renderSlide = (slide) => {
 
     case 'cta':
       return (
-        <div className="flex-1 relative flex flex-col items-center justify-center text-center p-12 md:p-16">
-          <div className="absolute inset-0 z-0 overflow-hidden">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-[120px]" />
-          </div>
-          <div className="relative z-10">
-            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
-              <h2 className="text-6xl md:text-8xl font-black mb-6 tracking-tighter">{slide.title}</h2>
-              <p className="text-2xl md:text-3xl font-medium text-white/50 mb-12">{slide.subtitle}</p>
-              <button className="px-10 py-5 bg-accent text-black rounded-full text-xl md:text-2xl font-black flex items-center gap-4 hover:scale-110 transition-transform active:scale-95 shadow-[0_0_30px_rgba(165,241,78,0.3)]">
-                JOIN THE REVOLUTION <ArrowRight size={28} strokeWidth={3} />
-              </button>
-            </motion.div>
+        <div className="flex-1 p-12 md:p-16 flex flex-col justify-center">
+          <div className="max-w-6xl mx-auto w-full pt-24 text-center">
+            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-[120px]" />
+            </div>
+            <div className="relative z-10">
+              <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
+                <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter">{slide.title}</h2>
+                <p className="text-lg md:text-xl text-white/50 mb-12 leading-relaxed max-w-4xl mx-auto">{slide.subtitle}</p>
+                <button
+                  onClick={exportToPDF}
+                  className="px-10 py-5 bg-black text-white border-2 border-white/20 rounded-full text-xl md:text-2xl font-black flex items-center gap-4 hover:scale-110 hover:border-accent transition-all active:scale-95 shadow-[0_0_30px_rgba(165,241,78,0.2)] mx-auto cursor-pointer"
+                >
+                  Download PDF <Download size={28} strokeWidth={3} />
+                </button>
+              </motion.div>
+            </div>
           </div>
         </div>
       );
