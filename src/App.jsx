@@ -76,10 +76,10 @@ const App = () => {
     {
       type: 'feature',
       title: 'Step 1: The Intelligence Layer',
-      subtitle: 'ZestOS Lite Foundation',
+      subtitle: 'ZestOS Foundation',
       points: [
         'WhatsApp Assistant for Agents',
-        'Customer Self-Service Interface',
+        'Customer WhatsApp Agent',
         '24/7 Embeddable Web Chatbot',
         'Property Listing Integration'
       ]
@@ -404,19 +404,24 @@ const renderSlide = (slide) => {
 
     case 'split':
       return (
-        <div className="flex-1 flex">
-          <div className="w-1/2 p-12 md:p-16 flex flex-col justify-center border-r border-white/5 bg-accent/[0.02]">
-            <div className="max-w-sm ml-auto">
-              <Smartphone className="text-accent mb-6" size={48} />
-              <h3 className="text-3xl md:text-4xl font-black mb-4 tracking-tighter">{slide.left.title}</h3>
-              <p className="text-lg text-white/40 leading-relaxed">{slide.left.desc}</p>
-            </div>
+        <div className="flex-1 flex flex-col">
+          <div className="px-12 md:px-16 pt-24 pb-8">
+            <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-center">{slide.title}</h2>
           </div>
-          <div className="w-1/2 p-12 md:p-16 flex flex-col justify-center bg-white/[0.01]">
-            <div className="max-w-sm mr-auto">
-              <Users className="text-accent mb-6" size={48} />
-              <h3 className="text-3xl md:text-4xl font-black mb-4 tracking-tighter">{slide.right.title}</h3>
-              <p className="text-lg text-white/40 leading-relaxed">{slide.right.desc}</p>
+          <div className="flex-1 flex">
+            <div className="w-1/2 p-12 md:p-16 flex flex-col justify-center border-r border-white/5 bg-accent/[0.02]">
+              <div className="max-w-sm ml-auto">
+                <Smartphone className="text-accent mb-6" size={48} />
+                <h3 className="text-3xl md:text-4xl font-black mb-4 tracking-tighter">{slide.left.title}</h3>
+                <p className="text-lg text-white/40 leading-relaxed">{slide.left.desc}</p>
+              </div>
+            </div>
+            <div className="w-1/2 p-12 md:p-16 flex flex-col justify-center bg-white/[0.01]">
+              <div className="max-w-sm mr-auto">
+                <Users className="text-accent mb-6" size={48} />
+                <h3 className="text-3xl md:text-4xl font-black mb-4 tracking-tighter">{slide.right.title}</h3>
+                <p className="text-lg text-white/40 leading-relaxed">{slide.right.desc}</p>
+              </div>
             </div>
           </div>
         </div>
