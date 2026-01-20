@@ -349,8 +349,8 @@ const renderSlide = (slide, exportToPDF) => {
 
     case 'roadmap':
       return (
-        <div className="flex-1 p-12 md:p-16 flex flex-col justify-center">
-          <div className="max-w-6xl mx-auto w-full pt-24">
+        <div className="flex-1 p-8 sm:p-12 md:p-16 flex flex-col justify-center">
+          <div className="max-w-6xl mx-auto w-full">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black mb-6 tracking-tighter text-center sm:text-left px-4 sm:px-0">Growth Roadmap</h2>
             {slide.subtitle && (
               <p className="text-lg md:text-xl text-white/50 mb-8 leading-relaxed max-w-4xl text-center sm:text-left">{slide.subtitle}</p>
@@ -376,8 +376,8 @@ const renderSlide = (slide, exportToPDF) => {
 
     case 'grid':
       return (
-        <div className="flex-1 p-12 md:p-16 flex flex-col justify-center">
-          <div className="max-w-6xl mx-auto w-full pt-24">
+        <div className="flex-1 p-8 sm:p-12 md:p-16 flex flex-col justify-center">
+          <div className="max-w-6xl mx-auto w-full">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black mb-6 tracking-tighter px-4 sm:px-0">{slide.title}</h2>
             {slide.subtitle && (
               <p className="text-lg md:text-xl text-white/50 mb-16 leading-relaxed max-w-4xl">{slide.subtitle}</p>
@@ -439,8 +439,8 @@ const renderSlide = (slide, exportToPDF) => {
 
     case 'split':
       return (
-        <div className="flex-1 flex flex-col overflow-y-auto sm:overflow-visible pr-2 sm:pr-0 pb-8 sm:pb-0">
-          <div className="px-8 sm:px-12 md:px-16 pt-24 pb-4 sm:pb-8">
+        <div className="flex-1 flex flex-col justify-center overflow-y-auto sm:overflow-visible pr-2 sm:pr-0 pb-8 sm:pb-0">
+          <div className="px-8 sm:px-12 md:px-16 pb-8 sm:pb-12">
             <h2 className="text-3xl sm:text-5xl md:text-7xl font-black tracking-tighter text-center">{slide.title}</h2>
             {slide.subtitle && (
               <p className="text-base sm:text-lg md:text-xl text-white/50 text-center mt-4 sm:mt-6 max-w-4xl mx-auto leading-relaxed">{slide.subtitle}</p>
@@ -468,8 +468,8 @@ const renderSlide = (slide, exportToPDF) => {
     case 'feature_highlight':
       return (
         <div className="flex-1 p-12 md:p-16 flex flex-col justify-center">
-          <div className="max-w-6xl mx-auto w-full pt-24">
-            <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter">{slide.title}</h2>
+          <div className="max-w-6xl mx-auto w-full">
+            <h2 className="text-3xl sm:text-5xl md:text-7xl font-black mb-6 tracking-tighter text-center sm:text-left">{slide.title}</h2>
             <p className="text-lg md:text-xl text-white/50 mb-12 leading-relaxed max-w-4xl">{slide.desc}</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 overflow-y-auto sm:overflow-visible pb-8 sm:pb-0 px-4 sm:px-0">
               {slide.points.map((pt, i) => (
@@ -487,9 +487,9 @@ const renderSlide = (slide, exportToPDF) => {
 
     case 'pricing':
       return (
-        <div className="flex-1 p-12 md:p-16 flex flex-col justify-center">
-          <div className="max-w-6xl mx-auto w-full pt-24">
-            <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter text-center">{slide.title}</h2>
+        <div className="flex-1 p-8 sm:p-12 md:p-16 flex flex-col justify-center">
+          <div className="max-w-6xl mx-auto w-full">
+            <h2 className="text-3xl sm:text-5xl md:text-7xl font-black mb-6 tracking-tighter text-center">{slide.title}</h2>
             {slide.subtitle && (
               <p className="text-lg md:text-xl text-white/50 mb-12 leading-relaxed text-center max-w-4xl mx-auto">{slide.subtitle}</p>
             )}
@@ -519,9 +519,9 @@ const renderSlide = (slide, exportToPDF) => {
 
     case 'partner':
       return (
-        <div className="flex-1 p-12 md:p-16 flex flex-col justify-center">
-          <div className="max-w-6xl mx-auto w-full pt-24">
-            <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter text-center">{slide.title}</h2>
+        <div className="flex-1 p-8 sm:p-12 md:p-16 flex flex-col justify-center">
+          <div className="max-w-6xl mx-auto w-full">
+            <h2 className="text-3xl sm:text-5xl md:text-7xl font-black mb-6 tracking-tighter text-center">{slide.title}</h2>
             {slide.subtitle && (
               <p className="text-lg md:text-xl text-white/50 mb-12 leading-relaxed text-center max-w-4xl mx-auto">{slide.subtitle}</p>
             )}
