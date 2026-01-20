@@ -274,7 +274,7 @@ const renderSlide = (slide) => {
                 >
                   <h3 className="text-lg md:text-xl font-bold text-accent mb-1">{pt.title}</h3>
                   <p className="text-sm md:text-base text-white/50 group-hover:text-white/90 transition-colors leading-relaxed">{pt.desc}</p>
-                  <div className="mt-4 h-px w-full bg-white/5 group-last:hidden" />
+                  <div className="mt-4 h-px w-full bg-white/15 group-last:hidden" />
                 </motion.div>
               ))}
             </div>
