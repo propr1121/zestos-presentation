@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import {
   ChevronRight,
   ChevronLeft,
@@ -193,8 +192,7 @@ const App = () => {
   }, []);
 
   const exportToPDF = () => {
-    // Use browser's built-in print dialog which can save as PDF
-    window.print();
+    console.log("Download PDF clicked - add PDF file to public folder");
   };
 
   const slide = slides[currentSlide];
@@ -285,8 +283,8 @@ const renderSlide = (slide, exportToPDF) => {
     case 'problem':
       return (
         <div className="flex-1 flex max-h-full">
-          <div className="w-3/5 p-12 md:p-16 flex flex-col justify-center">
-            <h2 className="text-5xl md:text-7xl font-black mb-12 tracking-tighter leading-tight">{slide.title}</h2>
+          <div className="w-full sm:w-3/5 p-6 sm:p-12 md:p-16 flex flex-col justify-center">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black mb-8 sm:mb-12 tracking-tighter leading-tight px-4 sm:px-0">{slide.title}</h2>
             <div className="space-y-6">
               {slide.points.map((pt, i) => (
                 <motion.div
@@ -314,7 +312,7 @@ const renderSlide = (slide, exportToPDF) => {
       return (
         <div className="flex-1 p-12 md:p-16 flex flex-col justify-center">
           <div className="max-w-6xl mx-auto w-full pt-24">
-            <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter text-center">{slide.title}</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black mb-6 tracking-tighter text-center px-4 sm:px-0">{slide.title}</h2>
             {slide.subtitle && (
               <p className="text-lg md:text-xl text-white/50 text-center mb-12 max-w-4xl mx-auto leading-relaxed">{slide.subtitle}</p>
             )}
@@ -353,20 +351,20 @@ const renderSlide = (slide, exportToPDF) => {
       return (
         <div className="flex-1 p-12 md:p-16 flex flex-col justify-center">
           <div className="max-w-6xl mx-auto w-full pt-24">
-            <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter text-center sm:text-left">Growth Roadmap</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black mb-6 tracking-tighter text-center sm:text-left px-4 sm:px-0">Growth Roadmap</h2>
             {slide.subtitle && (
               <p className="text-lg md:text-xl text-white/50 mb-8 leading-relaxed max-w-4xl text-center sm:text-left">{slide.subtitle}</p>
             )}
-            <div className="grid grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 overflow-y-auto sm:overflow-visible pr-2 sm:pr-0 pb-8 sm:pb-0">
               {slide.phases.map((ph, i) => (
                 <motion.div
                   key={i}
                   whileHover={{ y: -8 }}
-                  className="bg-white/[0.05] border border-white/[0.12] rounded-[32px] p-10 md:p-12 flex flex-col h-full hover:border-accent/30 transition-colors"
+                  className="bg-white/[0.05] border border-white/[0.12] rounded-[32px] p-8 md:p-12 flex flex-col h-full hover:border-accent/30 transition-colors"
                 >
-                  <div className="text-accent font-black text-5xl md:text-6xl mb-5 opacity-40">{ph.phase}</div>
-                  <h3 className="text-2xl md:text-3xl font-bold mb-2">{ph.name}</h3>
-                  <div className="text-white/30 font-mono text-xs tracking-[0.2em] uppercase mb-5">{ph.timeline}</div>
+                  <div className="text-accent font-black text-4xl md:text-6xl mb-4 md:mb-5 opacity-40">{ph.phase}</div>
+                  <h3 className="text-xl md:text-3xl font-bold mb-2">{ph.name}</h3>
+                  <div className="text-white/30 font-mono text-[10px] md:text-xs tracking-[0.2em] uppercase mb-4 md:mb-5">{ph.timeline}</div>
                   <p className="text-sm md:text-base text-white/50 leading-relaxed mb-6 flex-1">{ph.desc}</p>
                   <div className="h-1 w-8 bg-accent/30 rounded-full" />
                 </motion.div>
@@ -380,19 +378,19 @@ const renderSlide = (slide, exportToPDF) => {
       return (
         <div className="flex-1 p-12 md:p-16 flex flex-col justify-center">
           <div className="max-w-6xl mx-auto w-full pt-24">
-            <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter">{slide.title}</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black mb-6 tracking-tighter px-4 sm:px-0">{slide.title}</h2>
             {slide.subtitle && (
               <p className="text-lg md:text-xl text-white/50 mb-16 leading-relaxed max-w-4xl">{slide.subtitle}</p>
             )}
-            <div className="grid grid-cols-2 gap-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12 overflow-y-auto sm:overflow-visible pr-2 sm:pr-0 pb-8 sm:pb-0">
               {slide.items.map((item, i) => (
-                <div key={i} className="flex gap-8 group cursor-pointer">
-                  <div className="w-16 h-16 rounded-2xl bg-white/[0.1] border border-white/[0.15] group-hover:border-accent/40 group-hover:bg-accent/10 flex items-center justify-center text-white/60 group-hover:text-accent flex-shrink-0 transition-all duration-300">
-                    {React.cloneElement(item.icon, { size: 32 })}
+                <div key={i} className="flex flex-col sm:flex-row gap-5 sm:gap-8 group cursor-pointer text-center sm:text-left">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto sm:mx-0 rounded-2xl bg-white/[0.1] border border-white/[0.15] group-hover:border-accent/40 group-hover:bg-accent/10 flex items-center justify-center text-white/60 group-hover:text-accent flex-shrink-0 transition-all duration-300">
+                    {React.cloneElement(item.icon, { size: 28 })}
                   </div>
                   <div>
-                    <h3 className="text-2xl md:text-3xl font-bold mb-3 group-hover:text-accent transition-colors duration-300">{item.title}</h3>
-                    <p className="text-base md:text-lg text-white/50 group-hover:text-white/70 leading-relaxed transition-colors duration-300">{item.desc}</p>
+                    <h3 className="text-xl md:text-3xl font-bold mb-2 sm:mb-3 group-hover:text-accent transition-colors duration-300">{item.title}</h3>
+                    <p className="text-sm md:text-lg text-white/50 group-hover:text-white/70 leading-relaxed transition-colors duration-300">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -403,16 +401,17 @@ const renderSlide = (slide, exportToPDF) => {
 
     case 'mockup':
       return (
-        <div className="flex-1 flex max-h-full">
-          <div className="w-1/2 p-12 md:p-16 flex flex-col justify-center">
-            <div className="max-w-xl">
-              <h2 className="text-6xl md:text-8xl font-black mb-10 tracking-tighter leading-[0.8]">{slide.title}</h2>
-              <p className="text-xl md:text-3xl font-medium text-white/50 leading-relaxed whitespace-pre-line">{slide.desc}</p>
+        <div className="flex-1 flex flex-col sm:flex-row max-h-full overflow-hidden sm:overflow-visible">
+          <div className="w-full sm:w-1/2 p-8 sm:p-12 md:p-16 flex flex-col justify-center">
+            <div className="max-w-xl mx-auto sm:mx-0 text-center sm:text-left">
+              <h2 className="text-4xl sm:text-6xl md:text-8xl font-black mb-6 sm:mb-10 tracking-tighter leading-[0.9] sm:leading-[0.8]">{slide.title}</h2>
+              <p className="text-lg sm:text-xl md:text-3xl font-medium text-white/50 leading-relaxed whitespace-pre-line">{slide.desc}</p>
             </div>
           </div>
-          <div className="w-1/2 relative h-full">
+          <div className="w-full sm:w-1/2 relative h-48 sm:h-full overflow-hidden">
             <img src={slide.image} className="w-full h-full object-cover" alt="WhatsApp Experience" />
-            <div className="absolute inset-y-0 left-0 w-48 bg-gradient-to-r from-black via-black/20 to-transparent" />
+            <div className="absolute inset-y-0 left-0 w-24 sm:w-48 bg-gradient-to-r from-black via-black/20 to-transparent sm:block hidden" />
+            <div className="absolute inset-x-0 top-0 h-16 sm:h-24 bg-gradient-to-b from-black to-transparent sm:hidden block" />
           </div>
         </div>
       );
@@ -421,16 +420,16 @@ const renderSlide = (slide, exportToPDF) => {
       return (
         <div className="flex-1 p-12 md:p-16 flex flex-col justify-center">
           <div className="max-w-6xl mx-auto w-full pt-24">
-            <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter leading-tight">{slide.title}</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black mb-6 tracking-tighter leading-tight text-center px-4 sm:px-0">{slide.title}</h2>
             {slide.description && (
               <p className="text-lg md:text-xl text-white/50 mb-8 leading-relaxed max-w-4xl">{slide.description}</p>
             )}
             <p className="text-xl md:text-2xl text-accent font-bold mb-10 uppercase tracking-widest">{slide.subtitle}</p>
-            <div className="grid grid-cols-2 gap-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-10 overflow-y-auto sm:overflow-visible px-4 sm:px-0">
               {slide.points.map((pt, i) => (
-                <div key={i} className="flex items-center gap-5 bg-white/[0.06] p-8 rounded-2xl border border-white/[0.12] hover:border-accent/30 hover:bg-white/[0.08] transition-all cursor-pointer group">
-                  <CheckCircle2 className="text-accent flex-shrink-0" size={28} />
-                  <span className="text-xl font-medium">{pt}</span>
+                <div key={i} className="flex items-center gap-4 sm:gap-5 bg-white/[0.06] p-6 sm:p-8 rounded-2xl border border-white/[0.12] hover:border-accent/30 hover:bg-white/[0.08] transition-all cursor-pointer group">
+                  <CheckCircle2 className="text-accent flex-shrink-0" size={24} sm:size={28} />
+                  <span className="text-lg sm:text-xl font-medium">{pt}</span>
                 </div>
               ))}
             </div>
@@ -440,26 +439,26 @@ const renderSlide = (slide, exportToPDF) => {
 
     case 'split':
       return (
-        <div className="flex-1 flex flex-col">
-          <div className="px-12 md:px-16 pt-24 pb-8">
-            <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-center">{slide.title}</h2>
+        <div className="flex-1 flex flex-col overflow-y-auto sm:overflow-visible pr-2 sm:pr-0 pb-8 sm:pb-0">
+          <div className="px-8 sm:px-12 md:px-16 pt-24 pb-4 sm:pb-8">
+            <h2 className="text-3xl sm:text-5xl md:text-7xl font-black tracking-tighter text-center">{slide.title}</h2>
             {slide.subtitle && (
-              <p className="text-lg md:text-xl text-white/50 text-center mt-6 max-w-4xl mx-auto leading-relaxed">{slide.subtitle}</p>
+              <p className="text-base sm:text-lg md:text-xl text-white/50 text-center mt-4 sm:mt-6 max-w-4xl mx-auto leading-relaxed">{slide.subtitle}</p>
             )}
           </div>
-          <div className="flex-1 flex">
-            <div className="w-1/2 p-12 md:p-16 flex flex-col justify-center border-r border-white/5 bg-accent/[0.02] hover:bg-accent/[0.04] transition-all duration-300 group cursor-pointer">
-              <div className="max-w-sm ml-auto">
-                <Smartphone className="text-accent mb-6 group-hover:scale-110 transition-transform duration-300" size={48} />
-                <h3 className="text-3xl md:text-4xl font-black mb-4 tracking-tighter group-hover:text-accent transition-colors">{slide.left.title}</h3>
-                <p className="text-xl text-white/40 group-hover:text-white/60 leading-relaxed transition-colors">{slide.left.desc}</p>
+          <div className="flex-1 flex flex-col sm:flex-row">
+            <div className="w-full sm:w-1/2 p-8 sm:p-12 md:p-16 flex flex-col justify-center border-b sm:border-b-0 sm:border-r border-white/5 bg-accent/[0.02] hover:bg-accent/[0.04] transition-all duration-300 group cursor-pointer">
+              <div className="max-w-sm mx-auto sm:ml-auto sm:mr-0 text-center sm:text-right">
+                <Smartphone className="text-accent mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300 mx-auto sm:ml-auto" size={40} />
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 sm:mb-4 tracking-tighter group-hover:text-accent transition-colors">{slide.left.title}</h3>
+                <p className="text-lg sm:text-xl text-white/40 group-hover:text-white/60 leading-relaxed transition-colors">{slide.left.desc}</p>
               </div>
             </div>
-            <div className="w-1/2 p-12 md:p-16 flex flex-col justify-center bg-white/[0.01] hover:bg-white/[0.03] transition-all duration-300 group cursor-pointer">
-              <div className="max-w-sm mr-auto">
-                <Users className="text-accent mb-6 group-hover:scale-110 transition-transform duration-300" size={48} />
-                <h3 className="text-3xl md:text-4xl font-black mb-4 tracking-tighter group-hover:text-accent transition-colors">{slide.right.title}</h3>
-                <p className="text-xl text-white/40 group-hover:text-white/60 leading-relaxed transition-colors">{slide.right.desc}</p>
+            <div className="w-full sm:w-1/2 p-8 sm:p-12 md:p-16 flex flex-col justify-center bg-white/[0.01] hover:bg-white/[0.03] transition-all duration-300 group cursor-pointer">
+              <div className="max-w-sm mx-auto sm:mr-auto sm:ml-0 text-center sm:text-left">
+                <Users className="text-accent mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300 mx-auto sm:mr-auto" size={40} />
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 sm:mb-4 tracking-tighter group-hover:text-accent transition-colors">{slide.right.title}</h3>
+                <p className="text-lg sm:text-xl text-white/40 group-hover:text-white/60 leading-relaxed transition-colors">{slide.right.desc}</p>
               </div>
             </div>
           </div>
@@ -472,13 +471,13 @@ const renderSlide = (slide, exportToPDF) => {
           <div className="max-w-6xl mx-auto w-full pt-24">
             <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter">{slide.title}</h2>
             <p className="text-lg md:text-xl text-white/50 mb-12 leading-relaxed max-w-4xl">{slide.desc}</p>
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 overflow-y-auto sm:overflow-visible pb-8 sm:pb-0 px-4 sm:px-0">
               {slide.points.map((pt, i) => (
-                <div key={i} className="flex items-center gap-5 bg-white/[0.04] p-6 rounded-2xl border border-white/[0.08] hover:border-accent/30 hover:bg-white/[0.06] transition-all cursor-pointer group">
-                  <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/20 group-hover:border-accent/40 group-hover:shadow-[0_0_20px_rgba(165,241,78,0.4)] transition-all duration-300">
-                    {React.cloneElement(pt.icon, { size: 20, className: "text-accent" })}
+                <div key={i} className="flex items-center gap-4 sm:gap-5 bg-white/[0.04] p-5 sm:p-6 rounded-2xl border border-white/[0.08] hover:border-accent/30 hover:bg-white/[0.06] transition-all cursor-pointer group">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/20 group-hover:border-accent/40 group-hover:shadow-[0_0_20px_rgba(165,241,78,0.4)] transition-all duration-300">
+                    {React.cloneElement(pt.icon, { size: 18, className: "text-accent" })}
                   </div>
-                  <span className="text-xl md:text-2xl font-bold tracking-tight group-hover:text-accent transition-colors duration-300">{pt.text}</span>
+                  <span className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight group-hover:text-accent transition-colors duration-300">{pt.text}</span>
                 </div>
               ))}
             </div>
@@ -494,21 +493,21 @@ const renderSlide = (slide, exportToPDF) => {
             {slide.subtitle && (
               <p className="text-lg md:text-xl text-white/50 mb-12 leading-relaxed text-center max-w-4xl mx-auto">{slide.subtitle}</p>
             )}
-            <div className="flex gap-6 w-full">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full overflow-y-auto sm:overflow-visible pb-8 sm:pb-0 pr-2 sm:pr-0 px-4 sm:px-0">
               {slide.tiers.map((tier, i) => (
-                <div key={i} className={`flex-1 rounded-3xl p-8 flex flex-col ${i === 0 ? 'bg-accent/10 border-accent/20 border-2' : 'bg-white/[0.03] border border-white/[0.05]'}`}>
-                  <h3 className="text-xs font-bold mb-2 uppercase tracking-[0.2em] opacity-40">{tier.name}</h3>
-                  <div className="text-4xl font-black mb-2">{tier.price}</div>
-                  <div className="text-sm font-bold text-accent mb-8">{i === 0 ? 'AI Intelligence' : i === 1 ? 'CRM Lite' : 'Living Ecosystem'}</div>
-                  <div className="space-y-3 mb-6">
+                <div key={i} className={`flex-1 rounded-3xl p-6 sm:p-8 flex flex-col ${i === 0 ? 'bg-accent/10 border-accent/20 border-2 scale-100 sm:scale-105 z-10' : 'bg-white/[0.03] border border-white/[0.05]'}`}>
+                  <h3 className="text-[10px] font-bold mb-2 uppercase tracking-[0.2em] opacity-40">{tier.name}</h3>
+                  <div className="text-3xl sm:text-4xl font-black mb-1 sm:mb-2">{tier.price}</div>
+                  <div className="text-xs font-bold text-accent mb-6 sm:mb-8">{i === 0 ? 'AI Intelligence' : i === 1 ? 'CRM Lite' : 'Living Ecosystem'}</div>
+                  <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8 flex-1">
                     {tier.features.map((f, j) => (
                       <div key={j} className="flex items-center gap-2">
-                        <CheckCircle2 size={14} className="text-accent" />
-                        <span className="text-sm font-medium text-white/60">{f}</span>
+                        <CheckCircle2 size={12} className="text-accent" />
+                        <span className="text-xs sm:text-sm font-medium text-white/60">{f}</span>
                       </div>
                     ))}
                   </div>
-                  <button className={`w-full py-3 rounded-xl font-bold text-sm transition-all ${i === 0 ? 'bg-accent text-black hover:scale-105' : 'bg-white/5 hover:bg-white/10'}`}>
+                  <button className={`w-full py-3 rounded-xl font-bold text-xs sm:text-sm transition-all ${i === 0 ? 'bg-accent text-black hover:scale-105 active:scale-95' : 'bg-white/5 hover:bg-white/10'}`}>
                     {i === 0 ? 'Today' : i === 1 ? 'Next' : 'Future'}
                   </button>
                 </div>
@@ -526,21 +525,21 @@ const renderSlide = (slide, exportToPDF) => {
             {slide.subtitle && (
               <p className="text-lg md:text-xl text-white/50 mb-12 leading-relaxed text-center max-w-4xl mx-auto">{slide.subtitle}</p>
             )}
-            <div className="max-w-4xl bg-gradient-to-br from-white/[0.05] to-transparent p-12 rounded-[48px] border border-white/[0.1] mx-auto">
-              <div className="grid grid-cols-2 gap-x-12">
-                <div className="space-y-4">
+            <div className="max-w-4xl bg-gradient-to-br from-white/[0.05] to-transparent p-8 sm:p-12 rounded-[32px] sm:rounded-[48px] border border-white/[0.1] mx-auto overflow-hidden">
+              <div className="flex flex-col sm:grid sm:grid-cols-2 gap-8 sm:gap-x-12">
+                <div className="space-y-3 sm:space-y-4">
                   {slide.benefits.map((b, i) => (
                     <div key={i} className="flex items-center gap-3">
-                      <TrendingUp size={20} className="text-accent" />
-                      <span className="text-lg font-medium tracking-tight whitespace-nowrap">{b}</span>
+                      <TrendingUp size={18} className="text-accent" />
+                      <span className="text-base sm:text-lg font-medium tracking-tight whitespace-nowrap">{b}</span>
                     </div>
                   ))}
                 </div>
-                <div className="flex flex-col justify-center items-end">
-                  <div className="text-xs font-bold uppercase tracking-widest opacity-30 mb-3">Initial Commitment</div>
+                <div className="flex flex-col justify-center items-center sm:items-end border-t sm:border-t-0 border-white/10 pt-6 sm:pt-0">
+                  <div className="text-[10px] font-bold uppercase tracking-widest opacity-30 mb-2 sm:mb-3 text-center sm:text-right">Initial Commitment</div>
                   <div className="text-4xl md:text-5xl font-black text-accent mb-1">€6,500</div>
-                  <div className="text-sm font-bold text-accent/60 mb-4">One-time Setup</div>
-                  <div className="text-sm font-bold opacity-30">+ €299/mo</div>
+                  <div className="text-xs sm:text-sm font-bold text-accent/60 mb-2 sm:mb-4">One-time Setup</div>
+                  <div className="text-xs sm:text-sm font-bold opacity-30">+ €299/mo</div>
                 </div>
               </div>
             </div>
@@ -565,21 +564,22 @@ const renderSlide = (slide, exportToPDF) => {
 
     case 'cta':
       return (
-        <div className="flex-1 p-12 md:p-16 flex flex-col justify-center">
-          <div className="max-w-6xl mx-auto w-full pt-24 text-center">
+        <div className="flex-1 p-8 sm:p-12 md:p-16 flex flex-col justify-center">
+          <div className="max-w-6xl mx-auto w-full pt-16 sm:pt-24 text-center">
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-[120px]" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[800px] h-[400px] sm:h-[800px] bg-accent/5 rounded-full blur-[80px] sm:blur-[120px]" />
             </div>
             <div className="relative z-10">
-              <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
-                <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter">{slide.title}</h2>
-                <p className="text-lg md:text-xl text-white/50 mb-12 leading-relaxed max-w-4xl mx-auto">{slide.subtitle}</p>
-                <button
-                  onClick={exportToPDF}
-                  className="px-10 py-5 bg-black text-white border-2 border-white/20 rounded-full text-xl md:text-2xl font-black flex items-center gap-4 hover:scale-110 hover:border-accent transition-all active:scale-95 shadow-[0_0_30px_rgba(165,241,78,0.2)] mx-auto cursor-pointer"
+              <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="px-4">
+                <h2 className="text-3xl sm:text-5xl md:text-7xl font-black mb-6 tracking-tighter leading-tight">{slide.title}</h2>
+                <p className="text-base sm:text-lg md:text-xl text-white/50 mb-10 sm:mb-12 leading-relaxed max-w-4xl mx-auto">{slide.subtitle}</p>
+                <a
+                  href="/ZestOS-Presentation.pdf"
+                  download="ZestOS-Presentation.pdf"
+                  className="inline-flex px-8 py-4 sm:px-10 sm:py-5 bg-black text-white border-2 border-white/20 rounded-full text-lg sm:text-xl md:text-2xl font-black items-center gap-3 sm:gap-4 hover:scale-110 hover:border-accent transition-all active:scale-95 shadow-[0_0_30px_rgba(165,241,78,0.2)] mx-auto cursor-pointer no-underline"
                 >
-                  Download PDF <Download size={28} strokeWidth={3} />
-                </button>
+                  Download PDF <Download className="w-6 h-6 sm:w-7 sm:h-7" strokeWidth={3} />
+                </a>
               </motion.div>
             </div>
           </div>
