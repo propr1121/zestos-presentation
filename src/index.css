@@ -15,7 +15,18 @@ body {
   overflow: hidden;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   height: 100vh;
+  height: 100dvh;
+  /* Dynamic viewport height for mobile */
   margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Prevent text size adjustment on mobile */
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Improve touch scrolling */
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 
 .glass {
@@ -52,4 +63,66 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.4);
+}
+
+/* ========================================
+   STANDARDIZED SLIDE LAYOUT SYSTEM
+   ======================================== */
+
+/* Base slide wrapper - consistent padding for ALL slides */
+.slide-wrapper {
+  width: 100%;
+  height: 100%;
+  padding: 100px 80px 60px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Mobile: simpler, consistent padding */
+@media (max-width: 768px) {
+  .slide-wrapper {
+    padding: 60px 24px 40px 24px;
+    justify-content: flex-start;
+  }
+}
+
+/* Content area within slide */
+.slide-content-area {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Standardized title styles */
+.slide-title {
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+.slide-subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  opacity: 0.6;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* Prevent layout shift */
+* {
+  box-sizing: border-box;
+}
+
+/* PDF/Print specific styles */
+@media print,
+screen and (min-width: 1920px) {
+  .slide-wrapper {
+    padding: 100px 80px 60px 80px !important;
+  }
+
+  .slide-content-area {
+    max-width: 1200px !important;
+  }
 }

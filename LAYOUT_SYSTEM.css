@@ -1,0 +1,34 @@
+/* STANDARDIZED SLIDE LAYOUT SYSTEM */
+
+/* 
+  PROBLEM: Too many responsive variations causing inconsistent positioning
+  SOLUTION: Unified padding and positioning system for all slides
+*/
+
+.slide-container {
+    /* Consistent padding for all slides */
+    --slide-padding-top: 120px;
+    /* Space from top for all content */
+    --slide-padding-x: 80px;
+    /* Horizontal padding */
+    --slide-padding-bottom: 40px;
+    /* Bottom padding */
+
+    /* Mobile overrides */
+    @media (max-width: 640px) {
+        --slide-padding-top: 80px;
+        --slide-padding-x: 24px;
+        --slide-padding-bottom: 24px;
+    }
+}
+
+/* Standardized title positioning */
+.slide-title {
+    margin-bottom: 24px;
+    /* All titles start at the same vertical position */
+}
+
+/* Standardized content positioning */
+.slide-content {
+    margin-top: 32px;
+}
